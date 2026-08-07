@@ -30,23 +30,11 @@ Instead of relying on heavy server-side models, this framework achieves **95.94%
 
 ---
 
-## 📸 Visual Pipeline & Results
 
-### 1. Preprocessing: Segmentation & CLAHE
-By forcing the background to absolute black (`[0,0,0]`), the network computes zero gradient updates for non-plant regions, physically forcing it to learn only from the leaf morphology.
-<div align="center">
-  <!-- REPLACE THE SRC LINK BELOW WITH YOUR ACTUAL SAVED IMAGE URL/PATH -->
-  <img src="docs/preprocessing_sample.png" alt="Raw vs Segmented vs CLAHE" width="800">
-  <p><i>Left: Raw Image | Middle: U-2-Net Masked | Right: CLAHE Enhanced (L-Channel)</i></p>
-</div>
 
-### 2. Final Diagnostic Performance
+
+###  Final Diagnostic Performance
 The model was evaluated against a strictly isolated test dataset. EfficientNetB0 vastly outperformed ResNet50 in both accuracy and parameter efficiency.
-<div align="center">
-  <!-- REPLACE THE SRC LINK BELOW WITH YOUR ACTUAL SAVED IMAGE URL/PATH -->
-  <img src="docs/confusion_matrix.png" alt="EfficientNetB0 Confusion Matrix" width="600">
-  <p><i>Confusion Matrix of the Fine-Tuned EfficientNetB0 Architecture</i></p>
-</div>
 
 | Architecture | Test Accuracy | Test Loss | Parameters | Status |
 | :--- | :---: | :---: | :---: | :--- |
