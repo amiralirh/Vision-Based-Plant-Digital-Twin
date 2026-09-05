@@ -39,6 +39,4 @@ The pipeline is modularly designed into distinct subsystems that feed into a cen
 *   **State Estimation:** SciPy, Custom EKF implementations
 
 
-# 4. Install required dependencies
-pip install --upgrade pip
-pip install -r requirements.txt
+
