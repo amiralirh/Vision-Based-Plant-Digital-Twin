@@ -1,0 +1,1281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>B.Sc. Thesis Presentation - Amirali Rouhi</title>
+    <style>
+        /* HIGH-END ACADEMIC KEYNOTE THEME */
+        :root {
+            --bg-base: #06090c;
+            --bg-surface: #0f161c;
+            --bg-card: rgba(20, 28, 36, 0.6);
+            --text-main: #f0f4f8;
+            --text-muted: #829ab1;
+            --emerald: #10b981;
+            --emerald-glow: rgba(16, 185, 129, 0.15);
+            --teal: #14b8a6;
+            --blue: #3b82f6;
+            --gold: #f59e0b;
+            --border: rgba(255, 255, 255, 0.08);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-base);
+            color: var(--text-main);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        /* Ambient Animated Background */
+        .ambient-mesh {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background-image: 
+                radial-gradient(circle at 15% 50%, rgba(16, 185, 129, 0.04), transparent 25%),
+                radial-gradient(circle at 85% 30%, rgba(59, 130, 246, 0.04), transparent 25%);
+            z-index: 0;
+            animation: breathe 10s ease-in-out infinite alternate;
+        }
+        @keyframes breathe {
+            0% { transform: scale(1); opacity: 0.8; }
+            100% { transform: scale(1.05); opacity: 1; }
+        }
+
+        /* Presentation Canvas */
+        #presentation-container {
+            flex-grow: 1; position: relative; z-index: 1;
+            display: flex; justify-content: center; align-items: center;
+            padding: 2rem 5rem 6rem 5rem;
+        }
+
+        .slide {
+            display: none; width: 100%; max-width: 1300px; height: 100%;
+            flex-direction: column; justify-content: center;
+        }
+        .slide.active { display: flex; }
+
+        /* Staggered Animations */
+        .anim-element {
+            opacity: 0; transform: translateY(30px);
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .slide.active .anim-element.delay-1 { opacity: 1; transform: translateY(0); transition-delay: 0.1s; }
+        .slide.active .anim-element.delay-2 { opacity: 1; transform: translateY(0); transition-delay: 0.2s; }
+        .slide.active .anim-element.delay-3 { opacity: 1; transform: translateY(0); transition-delay: 0.3s; }
+        .slide.active .anim-element.delay-4 { opacity: 1; transform: translateY(0); transition-delay: 0.4s; }
+
+        /* Typography */
+        h1 {
+            font-size: 3.5rem; font-weight: 800; line-height: 1.15; margin-bottom: 1.5rem;
+            background: linear-gradient(to right, #fff, #94a3b8);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .title-sub { font-size: 1.8rem; color: var(--emerald); font-weight: 500; letter-spacing: -0.5px; margin-bottom: 2rem; }
+        
+        .section-huge {
+            font-size: 5rem; font-weight: 900; line-height: 1; margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--emerald), var(--teal));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+
+        h2 {
+            font-size: 2.4rem; color: #fff; font-weight: 600; margin-bottom: 2.5rem;
+            display: flex; align-items: center; gap: 1rem;
+        }
+        h2::before { content: ""; display: block; width: 8px; height: 35px; background: var(--emerald); border-radius: 4px; }
+
+        p, li { font-size: 1.3rem; line-height: 1.7; color: #cbd5e1; }
+        ul { margin-left: 2.5rem; }
+        li { margin-bottom: 1rem; padding-left: 0.5rem; }
+        li::marker { color: var(--emerald); font-size: 1.2em; }
+        strong { color: #fff; font-weight: 600; }
+
+        /* Layout Grids */
+        .split-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; height: 100%; }
+        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+
+        /* Elegant Cards */
+        .glass-card {
+            background: var(--bg-card); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border); border-radius: 16px; padding: 2.5rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2); transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .glass-card:hover { transform: translateY(-5px); box-shadow: 0 15px 40px var(--emerald-glow); border-color: rgba(16, 185, 129, 0.3); }
+
+        /* Massive Cinematic Metrics */
+        .cinematic-metric {
+            font-size: 5.5rem; font-weight: 900; line-height: 1; margin-bottom: 0.5rem;
+            background: linear-gradient(to bottom, #fff, var(--emerald));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            font-variant-numeric: tabular-nums;
+        }
+        .metric-caption { font-size: 1.2rem; text-transform: uppercase; letter-spacing: 2px; color: var(--text-muted); font-weight: 600; }
+
+        /* Visual Placeholders */
+        .visual-placeholder {
+            border: 1px dashed rgba(255,255,255,0.2); background: rgba(0,0,0,0.2);
+            border-radius: 16px; display: flex; align-items: center; justify-content: center;
+            text-align: center; color: var(--text-muted); font-size: 1.2rem;
+            min-height: 350px; width: 100%; padding: 2rem; font-family: monospace;
+            position: relative; overflow: hidden;
+        }
+        .visual-placeholder::after {
+            content: ""; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
+            background: linear-gradient(to right, transparent, rgba(255,255,255,0.03), transparent);
+            transform: skewX(-20deg); animation: shine 5s infinite;
+        }
+        @keyframes shine { 0% { left: -100%; } 20% { left: 200%; } 100% { left: 200%; } }
+
+        .logo-box {
+            border: 1px dashed var(--emerald); background: var(--emerald-glow); color: var(--emerald);
+            padding: 1rem 3rem; border-radius: 8px; display: inline-block;
+            margin-bottom: 3rem; font-family: monospace; letter-spacing: 1px;
+        }
+
+        /* Modern Bottom Bar */
+        #nav-bar {
+            position: fixed; bottom: 0; left: 0; width: 100%; height: 80px;
+            background: rgba(6, 9, 12, 0.8); backdrop-filter: blur(20px); border-top: 1px solid var(--border);
+            display: flex; justify-content: space-between; align-items: center; padding: 0 4rem; z-index: 100;
+        }
+
+        /* Progress Dots */
+        .progress-track { display: flex; gap: 8px; align-items: center; }
+        .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--border); transition: 0.3s; }
+        .dot.active { background: var(--emerald); transform: scale(1.5); box-shadow: 0 0 10px var(--emerald); }
+
+        .btn {
+            background: transparent; color: var(--text-main); border: 1px solid var(--border);
+            padding: 10px 24px; font-size: 1rem; font-weight: 600; border-radius: 8px; cursor: pointer; transition: 0.2s;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .btn:hover:not(:disabled) { background: #fff; color: #000; }
+        .btn:disabled { opacity: 0.2; cursor: not-allowed; }
+        
+        .accent-text { color: var(--emerald); }
+        .warning-text { color: var(--gold); }
+    </style>
+</head>
+<body>
+
+    <div class="ambient-mesh"></div>
+
+    <div id="presentation-container">
+        
+        <!-- Slide 1: Title -->
+        <div class="slide" style="text-align: center; align-items: center;">
+            <img src="images/logo.png" class="anim-element delay-4" style="width: 100%; max-height: 250px; object-fit: contain; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);" alt="Architecture Diagram">
+            <div style="max-width: 1000px;">
+                <h1 class="anim-element delay-2">Intelligent Agricultural Analysis System</h1>
+                <p class="title-sub anim-element delay-3">Based on Image Processing Towards a Plant Digital Twin</p>
+                
+                <div class="glass-card anim-element delay-4" style="display: flex; justify-content: space-around; padding: 2rem; margin-top: 3rem; background: transparent; border: none; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); border-radius: 0;">
+                    <div><p class="metric-caption">Author</p><p style="font-size: 1.5rem; color:#fff; font-weight: 600;">Amirali Rouhi</p></div>
+                    <div><p class="metric-caption">Supervisor</p><p style="font-size: 1.5rem; color:#fff; font-weight: 600;">Dr. Bijan Moaveni</p></div>
+                    <div><p class="metric-caption">Date</p><p style="font-size: 1.5rem; color:#fff; font-weight: 600;">September 2026</p></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 2 -->
+        <div class="slide">
+            <h2 class="anim-element delay-1">Introduction to CPS & Digital Twins</h2>
+            <div class="split-layout">
+                <div style="display: flex; flex-direction: column; gap: 2rem;">
+                    <div class="glass-card anim-element delay-2">
+                        <h3 class="accent-text" style="font-size: 1.4rem; margin-bottom: 10px;">Cyber-Physical Systems (CPS)</h3>
+                        <p>Engineered architectures integrating computational algorithms with physical processes to autonomously monitor and control complex environments.</p>
+                    </div>
+                    <div class="glass-card anim-element delay-3">
+                        <h3 class="accent-text" style="font-size: 1.4rem; margin-bottom: 10px;">Digital Twins</h3>
+                        <p>High-fidelity virtual replicas of physical entities that continuously update via real-time sensory data to simulate, predict, and optimize physical behaviors.</p>
+                    </div>
+                </div>
+                <img src="images/2.jpg" class="anim-element delay-4" style="width: 100%; max-height: 600px; object-fit: contain; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);" alt="Architecture Diagram">
+            </div>
+        </div>
+
+        <!-- Slide 3 -->
+        <div class="slide">
+            <h2 class="anim-element delay-1">Project Architecture Overview</h2>
+            <div class="split-layout">
+                <div>
+                    <ul style="display: flex; flex-direction: column; gap: 2rem; list-style: none; margin:0;">
+                        <li class="glass-card anim-element delay-2" style="padding: 1.5rem 2rem; border-left: 4px solid var(--emerald);">
+                            <strong style="font-size: 1.2rem;">Phase 1: Perception Layer</strong><br>
+                            Deep learning models for structural tracking and pathology detection.
+                        </li>
+                        <li class="glass-card anim-element delay-3" style="padding: 1.5rem 2rem; border-left: 4px solid var(--blue);">
+                            <strong style="font-size: 1.2rem;">Phase 2: State Estimation</strong><br>
+                            Kinematic filtration algorithms to reject visual noise (EKF).
+                        </li>
+                        <li class="glass-card anim-element delay-4" style="padding: 1.5rem 2rem; border-left: 4px solid var(--gold);">
+                            <strong style="font-size: 1.2rem;">Phase 3: Cyber-Physical Control</strong><br>
+                            Integration of real-time telemetry with decision-making logic.
+                        </li>
+                    </ul>
+                </div>
+                <img src="images/3.jpg" class="anim-element delay-4" style="width: 100%; max-height: 600px; object-fit: contain; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);" alt="Architecture Diagram">
+            </div>
+        </div>
+
+        <!-- Slide 4 -->
+        <div class="slide" style="text-align: center; align-items: center;">
+            <p class="metric-caption anim-element delay-1" style="color: var(--emerald); margin-bottom: 1rem;">Subsystem 1</p>
+            <div class="section-huge anim-element delay-2">Disease Diagnosis &<br>Health Classification</div>
+        </div>
+
+        <!-- Slide 5 -->
+        <div class="slide">
+            <h2 class="anim-element delay-1">Subsystem 1 & Dataset Protocol</h2>
+            <div class="split-layout">
+                <div>
+                    <div class="glass-card anim-element delay-2" style="margin-bottom: 2rem;">
+                        <p class="metric-caption" style="color: var(--emerald); margin-bottom: 10px;">Core Objective</p>
+                        <p style="font-size: 1.5rem; color: #fff;">Develop a robust CNN pipeline capable of identifying microscopic biological stress in plant leaves.</p>
+                    </div>
+                    <ul class="anim-element delay-3">
+                        <li><strong>Dataset Source:</strong> PlantVillage database, rigorously filtered to focus exclusively on Tomato plant pathologies.</li>
+                        <li><strong>Class Distribution:</strong> Spans multiple clinical states, ranging from healthy tissue to infectious diseases such as Septoria Leaf Spot.</li>
+                    </ul>
+                </div>
+                <img src="images/5.png" class="anim-element delay-4" style="width: 100%; max-height: 600px; object-fit: contain; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);" alt="Architecture Diagram">
+            </div>
+        </div>
+
+        <!-- Slide 6 -->
+        <div class="slide">
+            <h2 class="anim-element delay-1">Pre-processing Phase 1</h2>
+            <div class="split-layout">
+                <div style="display: flex; flex-direction: column; gap: 2rem;">
+                    <div class="glass-card anim-element delay-2">
+                        <h3 class="accent-text" style="font-size: 1.4rem; margin-bottom: 10px;">Background Removal</h3>
+                        <p>Isolation of the primary biological subject from complex backgrounds to prevent the network from learning irrelevant environmental features.</p>
+                    </div>
+                    <div class="glass-card anim-element delay-3">
+                        <h3 class="accent-text" style="font-size: 1.4rem; margin-bottom: 10px;">Masking Operations</h3>
+                        <p>Utilizing thresholding and morphological operations to generate clean boundaries around the leaf structures while preserving critical biological textures.</p>
+                    </div>
+                </div>
+                
+                <!-- Here is the new visual placeholder for your image -->
+                <img src="images/6.png" class="anim-element delay-4" style="width: 100%; max-height: 600px; object-fit: contain; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);" alt="Architecture Diagram">
+                
+                <!-- Or if you want to put the image tag right away, replace the line above with: -->
+                <!-- <img src="images/your-masking-pic.png" class="anim-element delay-4" style="width: 100%; max-height: 450px; object-fit: contain; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);" alt="Masking Operations"> -->
+                
+            </div>
+        </div>
+
+        <!-- Slide 7 -->
+        <div class="slide">
+            <h2 class="anim-element delay-1">Pre-processing Phase 2</h2>
+            <div class="split-layout">
+                <div style="display: flex; flex-direction: column; gap: 2rem;">
+                    <div class="glass-card anim-element delay-2">
+                        <h3 class="accent-text" style="font-size: 1.4rem; margin-bottom: 10px;">CLAHE Filter</h3>
+                        <p>Application of Contrast Limited Adaptive Histogram Equalization to normalize varied lighting conditions.</p>
+                    </div>
+                    <div class="glass-card anim-element delay-3">
+                        <h3 class="accent-text" style="font-size: 1.4rem; margin-bottom: 10px;">Texture Amplification</h3>
+                        <p>Improving the visibility of microscopic pathogenic features without amplifying latent image noise.</p>
+                    </div>
+                </div>
+                <img src="images/7.png" class="anim-element delay-4" style="width: 100%; max-height: 600px; object-fit: contain; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);" alt="Architecture Diagram">
+            </div>
+        </div>
+
+        <!-- Slide 8 -->
+        <div class="slide">
+            <h2 class="anim-element delay-1">Data Preparation Protocol</h2>
+            <div class="grid-3" style="margin-top: 2rem;">
+                
+                <!-- Partitioning & Batch Size -->
+                <div class="glass-card anim-element delay-2">
+                    <h3 class="accent-text" style="font-size: 1.4rem; margin-bottom: 15px;">Dataset Partitioning</h3>
+                    <ul style="margin: 0; padding-left: 1.2rem; font-size: 1.15rem;">
+                        <li style="margin-bottom: 10px;"><strong>Distribution:</strong> Train <span class="warning-text">80%</span> | Val <span class="warning-text">10%</span> | Test <span class="warning-text">10%</span></li>
+                        <li style="margin-bottom: 10px;"><strong>Image Counts:</strong> 12,809 Train | 1,602 Val | 1,600 Test (<span class="warning-text">16,011</span> total).</li>
+                        <li><strong>Batch Strategy:</strong> Propagated using a batch size of <span class="warning-text">32</span> (401 train batches) for RAM-safe optimization.</li>
+                    </ul>
+                </div>
+                
+                <!-- Dimensionality -->
+                <div class="glass-card anim-element delay-3">
+                    <h3 class="accent-text" style="font-size: 1.4rem; margin-bottom: 15px;">Dimensionality</h3>
+                    <ul style="margin: 0; padding-left: 1.2rem; font-size: 1.15rem;">
+                        <li style="margin-bottom: 10px;"><strong>Resolution:</strong> All macroscopic RGB images standardized to <span class="warning-text">224 &times; 224</span> pixels.</li>
+                        <li><strong>Constraint:</strong> Mapped precisely to the required input tensor dimensions <code>(None, 224, 224, 3)</code> for the classification core.</li>
+                    </ul>
+                </div>
+                
+                <!-- Class Imbalance Formula -->
+                <div class="glass-card anim-element delay-4">
+                    <h3 class="accent-text" style="font-size: 1.4rem; margin-bottom: 15px;">Class Imbalance</h3>
+                    <p style="font-size: 1.15rem; margin-bottom: 15px;">Dynamic class weights applied to the cross-entropy loss function to penalize dominant classes:</p>
+                    
+                    <!-- HTML-Rendered Mathematical Formula -->
+                    <div style="display: flex; align-items: center; justify-content: center; font-family: 'Times New Roman', serif; font-size: 1.6rem; color: #fff; background: rgba(0,0,0,0.3); padding: 1rem; border-radius: 8px; border: 1px solid var(--border);">
+                        <span style="margin-right: 15px;">W<sub>i</sub> = </span>
+                        <div style="display: flex; flex-direction: column; text-align: center;">
+                            <span style="border-bottom: 1px solid #fff; padding: 0 10px 5px 10px;">N<sub>total</sub></span>
+                            <span style="padding: 5px 10px 0 10px;">K &times; N<sub>i</sub></span>
+                        </div>
+                    </div>
+                    
+                    <p style="font-size: 0.95rem; color: var(--text-muted); margin-top: 15px; text-align: center;">
+                        Where <strong>K = 10</strong> classes, <strong>N<sub>total</sub> = 16,011</strong>, and <strong>N<sub>i</sub></strong> = samples in class <em>i</em>
+                    </p>
+                </div>
+                
+            </div>
+        </div>
+
+        <!-- Slide 9 -->
+        <div class="slide">
+            <h2 class="anim-element delay-1" style="margin-bottom: 1.5rem;">Classification Networks & Modular Architecture</h2>
+            
+            <div class="glass-card anim-element delay-2" style="padding: 1.2rem 2rem; margin-bottom: 1.5rem; border-color: var(--emerald);">
+                <p style="font-size: 1.15rem; text-align: center; margin: 0;">Dynamic model factory engineered to standardize initialization for <strong>EfficientNetB0</strong>, <strong>ResNet50</strong>, and <strong>MobileNetV2</strong>.</p>
+            </div>
+            
+            <div class="split-layout" style="align-items: stretch; gap: 2rem;">
+                <div class="glass-card anim-element delay-3" style="padding: 2rem;">
+                    <h3 class="accent-text" style="font-size: 1.3rem; margin-bottom: 10px;">Architecture-Specific Preprocessing</h3>
+                    <ul style="margin: 0; padding-left: 1.2rem; font-size: 1.05rem; line-height: 1.5;">
+                        <li style="margin-bottom: 10px;"><strong>EfficientNetB0:</strong> Relies on internal rescaling logic, taking raw tensors directly.</li>
+                        <li style="margin-bottom: 10px;"><strong>MobileNetV2:</strong> Integrates a custom scaling layer to shift pixel values precisely into a <code>[-1, 1]</code> range.</li>
+                        <li><strong>ResNet50:</strong> Utilizes a dedicated wrapper for channel-wise mean subtraction.</li>
+                    </ul>
+                </div>
+                
+                <div class="glass-card anim-element delay-4" style="padding: 2rem;">
+                    <h3 class="accent-text" style="font-size: 1.3rem; margin-bottom: 10px;">Transfer Setup & Custom Head</h3>
+                    <ul style="margin: 0; padding-left: 1.2rem; font-size: 1.05rem; line-height: 1.5;">
+                        <li style="margin-bottom: 10px;"><strong>Feature Extraction:</strong> Base weights strictly locked. Global Average Pooling (GAP) applied.</li>
+                        <li style="margin-bottom: 10px;"><strong>Regularization:</strong> 20% Dropout rate (<code>0.2</code>) appended to prevent overfitting.</li>
+                        <li><strong>Compilation:</strong> Optimized via Adam and Sparse Categorical Crossentropy.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 10 -->
+        <div class="slide">
+            <h2 class="anim-element delay-1">Training Execution & Convergence Analysis</h2>
+            <div class="split-layout">
+                
+                <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                    <div class="glass-card anim-element delay-2" style="padding: 1.5rem 2rem;">
+                        <h3 class="accent-text" style="font-size: 1.3rem; margin-bottom: 5px;">High-Speed Optimization</h3>
+                        <p style="font-size: 1.1rem;">RAM-Safe disk caching (<code>tf.data.AUTOTUNE</code>) applied across 10 Epochs. Optimal network weights preserved strictly via <code>save_best_only</code> callbacks.</p>
+                    </div>
+                    
+                    <div class="glass-card anim-element delay-3" style="padding: 1.5rem 2rem; border-color: rgba(59, 130, 246, 0.4);">
+                        <h3 class="accent-text" style="font-size: 1.3rem; margin-bottom: 15px; color: var(--blue);">Peak Validation Accuracies</h3>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 1.1rem;">
+                            <span style="color:#fff; font-weight:600;">ResNet50</span> <span style="color:var(--emerald); font-weight:bold;">92.70%</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 1.1rem;">
+                            <span style="color:#fff; font-weight:600;">EfficientNetB0</span> <span style="color:var(--emerald); font-weight:bold;">90.89%</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; font-size: 1.1rem;">
+                            <span style="color:#fff; font-weight:600;">MobileNetV2</span> <span style="color:var(--emerald); font-weight:bold;">87.83%</span>
+                        </div>
+                    </div>
+
+                    <div class="glass-card anim-element delay-4" style="padding: 1.5rem 2rem;">
+                        <h3 class="accent-text" style="font-size: 1.3rem; margin-bottom: 10px;">Execution Times</h3>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 1.1rem;">
+                            <div><strong style="color:#fff;">EfficientNetB0:</strong></div> <div style="color:var(--text-muted);">6.77 min <em>(Fastest)</em></div>
+                            <div><strong style="color:#fff;">MobileNetV2:</strong></div> <div style="color:var(--text-muted);">7.06 min</div>
+                            <div><strong style="color:#fff;">ResNet50:</strong></div> <div style="color:var(--text-muted);">8.43 min</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="visual-placeholder anim-element delay-3" style="min-height: 480px; display: flex; flex-direction: column; gap: 15px;">
+                    <img src="images/10.png" class="anim-element delay-4" style="width: 100%; max-height: 600px; object-fit: contain; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);" alt="Architecture Diagram">
+                    <span style="font-size: 0.95rem; color: var(--text-muted); font-family: 'Segoe UI', sans-serif; letter-spacing: 0;">Red: MobileNetV2 | Blue: EfficientNetB0 | Green: ResNet50</span>
+                </div>
+                
+            </div>
+        </div>
+
+        <!-- Slide 11 -->
+        <div class="slide">
+            <h2 class="anim-element delay-1">Deep Fine-Tuning Process</h2>
+            <div class="glass-card anim-element delay-2" style="margin-bottom: 2rem; border-color: rgba(255,255,255,0.1); background: rgba(245, 158, 11, 0.05);">
+                <p style="font-size: 1.25rem; text-align: center; color: var(--text-muted);">
+                    <em>Note: MobileNetV2 was eliminated due to baseline underperformance. Fine-tuning proceeded exclusively with EfficientNetB0 and ResNet50.</em>
+                </p>
+            </div>
+            <div class="grid-3">
+                <div class="glass-card anim-element delay-2">
+                    <div style="font-size: 3rem; font-weight: 800; color: rgba(255,255,255,0.05); margin-bottom: 1rem; line-height: 1;">01</div>
+                    <h3 style="color: #fff; margin-bottom: 15px;">Targeted Unfreezing</h3>
+                    <p>Only the <strong>top 30 layers</strong> of the base architectures were unlocked. This prevents "catastrophic forgetting" of foundational ImageNet edge/color detectors while adapting deep layers to pathology features.</p>
+                </div>
+                <div class="glass-card anim-element delay-3">
+                    <div style="font-size: 3rem; font-weight: 800; color: rgba(255,255,255,0.05); margin-bottom: 1rem; line-height: 1;">02</div>
+                    <h3 style="color: #fff; margin-bottom: 15px;">Micro-LR Recompile</h3>
+                    <p>Recompiled using the Adam optimizer with a drastically reduced micro-learning rate of <strong>1e-5</strong>. Ensures weight updates are subtle and controlled on the loss landscape.</p>
+                </div>
+                <div class="glass-card anim-element delay-4">
+                    <div style="font-size: 3rem; font-weight: 800; color: rgba(255,255,255,0.05); margin-bottom: 1rem; line-height: 1;">03</div>
+                    <h3 style="color: #fff; margin-bottom: 15px;">Dynamic Callbacks</h3>
+                    <p>Integrated <code>ReduceLROnPlateau</code> (factor=0.2) to squeeze residual gains, and <code>EarlyStopping</code> (patience=4) to halt training and restore the absolute optimal weights to prevent overfitting.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 12 -->
+        <div class="slide">
+            <h2 class="anim-element delay-1" style="margin-bottom: 1.5rem;">Final Evaluation on Unseen Test Set</h2>
+            <div class="split-layout" style="align-items: stretch; gap: 3rem;">
+                <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                    
+                    <!-- Put metrics side-by-side to save vertical space -->
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                        <div class="glass-card anim-element delay-2" style="border-left: 4px solid var(--emerald); padding: 1.5rem;">
+                            <div class="cinematic-metric" style="font-size: 3.2rem; margin-bottom: 5px;">95.94%</div>
+                            <div class="metric-caption" style="font-size: 0.9rem;">EfficientNetB0<br>(Loss: 0.1189)</div>
+                        </div>
+                        
+                        <div class="glass-card anim-element delay-3" style="border-left: 4px solid var(--blue); padding: 1.5rem;">
+                            <div class="cinematic-metric" style="font-size: 3.2rem; background: linear-gradient(to bottom, #fff, var(--blue)); -webkit-background-clip: text; margin-bottom: 5px;">94.44%</div>
+                            <div class="metric-caption" style="font-size: 0.9rem;">ResNet50<br>(Loss: 0.1922)</div>
+                        </div>
+                    </div>
+
+                    <div class="glass-card anim-element delay-4" style="padding: 1.8rem;">
+                        <h3 class="accent-text" style="font-size: 1.3rem; margin-bottom: 8px;">Diagnostic Analytics (1,600 Images)</h3>
+                        <p style="font-size: 1.1rem; margin-bottom: 10px;"><strong>EfficientNetB0</strong> achieved near-perfect per-class precision, including:</p>
+                        <ul style="font-size: 1.1rem; margin: 0 0 0 1.5rem; padding: 0;">
+                            <li style="margin-bottom: 5px;">Tomato Mosaic Virus: <strong>100%</strong></li>
+                            <li style="margin-bottom: 5px;">Bacterial Spot: <strong>99.07%</strong></li>
+                            <li>Late Blight: <strong>97.78%</strong></li>
+                        </ul>
+                    </div>
+                    
+                </div>
+                
+                <div class="visual-placeholder anim-element delay-4" style="min-height: 400px; display: flex; flex-direction: column; justify-content: center; gap: 15px;">
+                    <img src="images/12.png" class="anim-element delay-4" style="width: 100%; max-height: 600px; object-fit: contain; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);" alt="Architecture Diagram">
+                    <span style="font-size: 0.95rem; color: var(--text-muted); font-family: 'Inter', sans-serif;">Generated via Scikit-Learn & Seaborn</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 13 -->
+        <div class="slide">
+            <h2 class="anim-element delay-1" style="margin-bottom: 1.5rem;">Final Core Selection</h2>
+            <div class="glass-card anim-element delay-2" style="text-align: center; padding: 2.5rem 3rem; position: relative; overflow: hidden; border-color: rgba(16, 185, 129, 0.4);">
+                <div style="position: absolute; top:0; left:0; width: 100%; height: 6px; background: linear-gradient(90deg, transparent, var(--emerald), transparent);"></div>
+                
+                <p class="metric-caption" style="margin-bottom: 0.5rem; color: var(--emerald);">Primary Diagnostic Engine Selected</p>
+                <div class="section-huge" style="margin-bottom: 2rem; font-size: 4.5rem;">EfficientNetB0</div>
+                
+                <div class="split-layout" style="text-align: left; gap: 3rem; align-items: start;">
+                    <div>
+                        <h3 style="color: #fff; font-size: 1.3rem; margin-bottom: 10px; display: flex; align-items: center; gap: 10px;">
+                            <svg width="24" height="24" fill="none" stroke="var(--emerald)" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            Peak Diagnostic Superiority
+                        </h3>
+                        <p style="font-size: 1.15rem; line-height: 1.5;">Outperformed ResNet50 in both global accuracy (95.94% vs 94.44%) and critical macro-average F1-Scores across all 10 pathogen classes.</p>
+                    </div>
+                    <div>
+                        <h3 style="color: #fff; font-size: 1.3rem; margin-bottom: 10px; display: flex; align-items: center; gap: 10px;">
+                            <svg width="24" height="24" fill="none" stroke="var(--emerald)" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                            Real-Time CPS Viability
+                        </h3>
+                        <p style="font-size: 1.15rem; line-height: 1.5;">Significantly lower parameter count ensures computationally lightweight, rapid inference—a strict prerequisite for integration into the closed-loop Digital Twin.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 14 -->
+        <div class="slide" style="text-align: center; align-items: center;">
+            <p class="metric-caption anim-element delay-1" style="color: var(--blue); margin-bottom: 1rem;">Subsystem 2</p>
+            <div class="section-huge anim-element delay-2" style="background: linear-gradient(135deg, var(--blue), #93c5fd); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Growth & Canopy Tracking</div>
+        </div>
+
+        <!-- Slide 15 -->
+        <div class="slide">
+            <h2 class="anim-element delay-1">Introduction to Subsystem 2</h2>
+            <div class="split-layout">
+                <div>
+                    <div class="glass-card anim-element delay-2" style="margin-bottom: 2rem;">
+                        <p class="metric-caption" style="color: var(--blue); margin-bottom: 10px;">Core Objective</p>
+                        <p style="font-size: 1.5rem; color: #fff;">Continuously monitor the macroscopic structural expansion of the plant canopy to determine precise biological growth rates.</p>
+                    </div>
+                    <ul class="anim-element delay-3">
+                        <li><strong>Dataset Source:</strong> The Komatsuna dataset, providing consistent, overhead time-lapse imagery of plant development.</li>
+                        <li><strong>Visual Geometry:</strong> Top-down perspectives strictly designed to calculate the 2D surface area of the vegetative spread.</li>
+                    </ul>
+                </div>
+                <img src="images/15.jpg" class="anim-element delay-4" style="width: 100%; max-height: 600px; object-fit: contain; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);" alt="Architecture Diagram">
+            </div>
+        </div>
+
+        <!-- Slide 16 -->
+        <div class="slide">
+            <h2 class="anim-element delay-1" style="margin-bottom: 1.5rem;">Segmentation Data Pipeline</h2>
+            <div class="grid-2" style="gap: 2rem; align-items: stretch;">
+                
+                <div class="glass-card anim-element delay-2" style="padding: 2rem;">
+                    <h3 class="accent-text" style="font-size: 1.3rem; margin-bottom: 10px;">1. Semantic Mask Caching</h3>
+                    <p style="font-size: 1.15rem; line-height: 1.5;">Flattened dynamic JSON annotations into unified 2D binary masks. Cached locally as <strong>lossless PNGs</strong> to completely eliminate CPU parsing bottlenecks during network training.</p>
+                </div>
+                
+                <div class="glass-card anim-element delay-3" style="padding: 2rem; border-color: var(--emerald);">
+                    <h3 class="accent-text" style="font-size: 1.3rem; margin-bottom: 10px; color: var(--emerald);">2. Interpolation-Safe Resizing</h3>
+                    <p style="font-size: 1.15rem; line-height: 1.5;">Tensors dynamically resized to 256&times;256. <code>NEAREST_NEIGHBOR</code> interpolation applied strictly to masks to prevent pixel blending and preserve absolute binary (0/1) leaf edges.</p>
+                </div>
+
+                <div class="glass-card anim-element delay-4" style="padding: 2rem;">
+                    <h3 class="accent-text" style="font-size: 1.3rem; margin-bottom: 10px;">3. Synchronized Splitting</h3>
+                    <p style="font-size: 1.15rem; line-height: 1.5;">Maintained strict 1:1 image-mask alignment via fixed-seed shuffling. 1,080 total samples sequentially partitioned into: <strong>Train (864)</strong>, <strong>Val (108)</strong>, and <strong>Test (108)</strong>.</p>
+                </div>
+
+                <div class="glass-card anim-element delay-4" style="padding: 2rem; border-color: var(--blue);">
+                    <h3 class="accent-text" style="font-size: 1.3rem; margin-bottom: 10px; color: var(--blue);">4. High-Throughput Optimization</h3>
+                    <p style="font-size: 1.15rem; line-height: 1.5;">Loaded all splits directly into RAM via <code>.cache()</code> to bypass disk read latency. Tensor mapping and background batching accelerated asynchronously using <code>tf.data.AUTOTUNE</code>.</p>
+                </div>
+                
+            </div>
+        </div>
+
+        <!-- Slide 17 -->
+        <div class="slide">
+            <h2 class="anim-element delay-1" style="margin-bottom: 1.5rem;">U-Net Architecture for Spatial Segmentation</h2>
+            
+            <div class="split-layout" style="align-items: stretch; gap: 2rem;">
+                
+                <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                    <div class="glass-card anim-element delay-2" style="padding: 1.8rem; border-color: rgba(255,255,255,0.1);">
+                        <h3 style="font-size: 1.3rem; margin-bottom: 8px; color: #fff;">Symmetric Encoder-Decoder Topology</h3>
+                        <p style="font-size: 1.1rem; line-height: 1.5; color: var(--text-muted);"><strong>Contraction:</strong> Sequential 3x3 convolutions and 2x2 max-pooling extract high-level semantic context. <br><strong>Expansion:</strong> Transposed convolutions restore spatial resolution. <br><strong>Skip Connections:</strong> High-frequency spatial details bypassed directly to the decoder to preserve finite canopy boundaries.</p>
+                    </div>
+                    
+                    <div class="glass-card anim-element delay-3" style="padding: 1.8rem; border-color: rgba(255,255,255,0.1);">
+                        <h3 style="font-size: 1.3rem; margin-bottom: 8px; color: #fff;">He Normal Initialization</h3>
+                        <p style="font-size: 1.1rem; line-height: 1.5; color: var(--text-muted);">A modular <code>conv2d_block</code> was engineered utilizing <code>he_normal</code> variance scaling and ReLU activations, mathematically preventing vanishing gradients during the deep convergence of the 9-block architecture.</p>
+                    </div>
+
+                    <div class="glass-card anim-element delay-4" style="padding: 1.8rem; border-color: var(--emerald);">
+                        <h3 style="font-size: 1.3rem; margin-bottom: 8px; color: var(--emerald);">Probabilistic Spatial Output</h3>
+                        <p style="font-size: 1.1rem; line-height: 1.5; color: var(--text-muted);">The terminal layer utilizes a 1x1 convolution with a Sigmoid activation, mapping the feature space to a <code>256x256x1</code> tensor where each pixel represents a continuous probability of belonging to the plant canopy class.</p>
+                    </div>
+                </div>
+
+                <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                    
+                    <!-- PUBLICATION-STYLE ACADEMIC SVG DIAGRAM -->
+                    <div class="glass-card anim-element delay-3" style="padding: 1.5rem; background: rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center; border: 1px solid rgba(255,255,255,0.05);">
+                        <svg viewBox="0 0 900 320" xmlns="http://www.w3.org/2000/svg" style="width: 100%; max-height: 380px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">
+                            <defs>
+                                <marker id="arrow-down" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#829ab1" /></marker>
+                                <marker id="arrow-up" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#829ab1" /></marker>
+                                <marker id="arrow-skip" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#cbd5e1" /></marker>
+                            </defs>
+
+                            <!-- Skip Connections (Minimalist Dashed) -->
+                            <line x1="80" y1="90" x2="745" y2="90" stroke="#cbd5e1" stroke-dasharray="4,4" stroke-width="1.5" marker-end="url(#arrow-skip)" />
+                            <line x1="160" y1="130" x2="655" y2="130" stroke="#cbd5e1" stroke-dasharray="4,4" stroke-width="1.5" marker-end="url(#arrow-skip)" />
+                            <line x1="240" y1="170" x2="565" y2="170" stroke="#cbd5e1" stroke-dasharray="4,4" stroke-width="1.5" marker-end="url(#arrow-skip)" />
+                            <line x1="320" y1="210" x2="475" y2="210" stroke="#cbd5e1" stroke-dasharray="4,4" stroke-width="1.5" marker-end="url(#arrow-skip)" />
+
+                            <!-- Feature Maps (Wireframe Academic Style) -->
+                            <!-- Encoder -->
+                            <rect x="60" y="30" width="20" height="120" fill="rgba(255,255,255,0.03)" stroke="#3b82f6" stroke-width="1.5" />
+                            <rect x="140" y="90" width="30" height="80" fill="rgba(255,255,255,0.03)" stroke="#3b82f6" stroke-width="1.5" />
+                            <rect x="220" y="150" width="40" height="40" fill="rgba(255,255,255,0.03)" stroke="#3b82f6" stroke-width="1.5" />
+                            <rect x="300" y="190" width="50" height="40" fill="rgba(255,255,255,0.03)" stroke="#3b82f6" stroke-width="1.5" />
+
+                            <!-- Bottleneck -->
+                            <rect x="390" y="230" width="70" height="20" fill="rgba(255,255,255,0.08)" stroke="#f59e0b" stroke-width="1.5" />
+
+                            <!-- Decoder -->
+                            <rect x="480" y="190" width="50" height="40" fill="rgba(255,255,255,0.03)" stroke="#10b981" stroke-width="1.5" />
+                            <rect x="570" y="150" width="40" height="40" fill="rgba(255,255,255,0.03)" stroke="#10b981" stroke-width="1.5" />
+                            <rect x="660" y="90" width="30" height="80" fill="rgba(255,255,255,0.03)" stroke="#10b981" stroke-width="1.5" />
+                            <rect x="750" y="30" width="20" height="120" fill="rgba(255,255,255,0.03)" stroke="#10b981" stroke-width="1.5" />
+
+                            <!-- Final Output -->
+                            <rect x="830" y="30" width="8" height="120" fill="rgba(255,255,255,0.1)" stroke="#f8fafc" stroke-width="1.5" />
+
+                            <!-- Dimension Labels (Rigorous format) -->
+                            <text x="70" y="15" fill="#94a3b8" font-size="11" text-anchor="middle" font-family="monospace">256x256x32</text>
+                            <text x="155" y="75" fill="#94a3b8" font-size="11" text-anchor="middle" font-family="monospace">128x128x64</text>
+                            <text x="240" y="135" fill="#94a3b8" font-size="11" text-anchor="middle" font-family="monospace">64x64x128</text>
+                            <text x="325" y="175" fill="#94a3b8" font-size="11" text-anchor="middle" font-family="monospace">32x32x256</text>
+                            
+                            <text x="425" y="270" fill="#f8fafc" font-size="12" text-anchor="middle" font-family="monospace" font-weight="bold">16x16x512</text>
+
+                            <text x="505" y="175" fill="#94a3b8" font-size="11" text-anchor="middle" font-family="monospace">32x32x256</text>
+                            <text x="590" y="135" fill="#94a3b8" font-size="11" text-anchor="middle" font-family="monospace">64x64x128</text>
+                            <text x="675" y="75" fill="#94a3b8" font-size="11" text-anchor="middle" font-family="monospace">128x128x64</text>
+                            <text x="760" y="15" fill="#94a3b8" font-size="11" text-anchor="middle" font-family="monospace">256x256x32</text>
+                            
+                            <text x="834" y="15" fill="#f8fafc" font-size="11" font-weight="bold" text-anchor="middle" font-family="monospace">256x256x1</text>
+
+                            <!-- Minimalist Directional Arrows -->
+                            <line x1="70" y1="165" x2="140" y2="165" stroke="#829ab1" stroke-width="1.5" marker-end="url(#arrow-down)" />
+                            <line x1="155" y1="185" x2="220" y2="185" stroke="#829ab1" stroke-width="1.5" marker-end="url(#arrow-down)" />
+                            <line x1="240" y1="205" x2="300" y2="205" stroke="#829ab1" stroke-width="1.5" marker-end="url(#arrow-down)" />
+                            <line x1="325" y1="240" x2="390" y2="240" stroke="#829ab1" stroke-width="1.5" marker-end="url(#arrow-down)" />
+
+                            <line x1="460" y1="240" x2="505" y2="240" stroke="#829ab1" stroke-width="1.5" marker-end="url(#arrow-up)" />
+                            <line x1="530" y1="205" x2="590" y2="205" stroke="#829ab1" stroke-width="1.5" marker-end="url(#arrow-up)" />
+                            <line x1="610" y1="185" x2="675" y2="185" stroke="#829ab1" stroke-width="1.5" marker-end="url(#arrow-up)" />
+                            <line x1="690" y1="165" x2="760" y2="165" stroke="#829ab1" stroke-width="1.5" marker-end="url(#arrow-up)" />
+                            <line x1="770" y1="90" x2="825" y2="90" stroke="#829ab1" stroke-width="1.5" marker-end="url(#arrow-up)" />
+
+                            <!-- Academic Legend -->
+                            <g transform="translate(180, 295)" font-size="11" fill="#94a3b8" font-family="monospace">
+                                <rect x="0" y="0" width="12" height="12" fill="none" stroke="#3b82f6" stroke-width="1.5"/>
+                                <text x="20" y="10">Conv2D + MaxPool</text>
+
+                                <rect x="150" y="0" width="12" height="12" fill="none" stroke="#10b981" stroke-width="1.5"/>
+                                <text x="170" y="10">Conv2DTranspose</text>
+
+                                <line x1="320" y1="6" x2="340" y2="6" stroke="#cbd5e1" stroke-dasharray="3,3" stroke-width="1.5" />
+                                <text x="350" y="10">Skip Connection</text>
+                                
+                                <rect x="470" y="0" width="12" height="12" fill="none" stroke="#f8fafc" stroke-width="1.5"/>
+                                <text x="490" y="10">1x1 Conv (Sigmoid)</text>
+                            </g>
+                        </svg>
+                    </div>
+                    
+                    <div class="glass-card anim-element delay-4" style="padding: 1.5rem; border-color: var(--blue); background: rgba(59, 130, 246, 0.05);">
+                        <h3 style="color: var(--blue); font-size: 1.2rem; margin-bottom: 8px;">Spatial Optimization Metric</h3>
+                        <p style="font-size: 1.05rem; line-height: 1.5; margin: 0; color: var(--text-muted);">Standard accuracy is inherently misleading in segmentation due to background dominance. The model was strictly optimized and evaluated utilizing <strong>BinaryIoU</strong> (Intersection over Union) to measure physical mapping precision.</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Slide 18 -->
+        <div class="slide">
+            <h2 class="anim-element delay-1" style="margin-bottom: 1.5rem;">Model Training & Convergence Diagnostics</h2>
+            <div class="split-layout" style="align-items: stretch; gap: 3rem;">
+                
+                <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                    
+                    <div class="glass-card anim-element delay-2" style="padding: 1.8rem; border-left: 4px solid var(--emerald);">
+                        <div class="cinematic-metric" style="font-size: 3.5rem; margin-bottom: 5px;">98.40%</div>
+                        <div class="metric-caption">Peak Validation IoU (Epoch 30)</div>
+                    </div>
+
+                    <div class="glass-card anim-element delay-3" style="padding: 1.8rem;">
+                        <h3 class="accent-text" style="font-size: 1.3rem; margin-bottom: 10px;">Metric-Driven Checkpointing</h3>
+                        <p style="font-size: 1.1rem; line-height: 1.5;">Engineered to strictly monitor <code>val_iou</code> (not loss) in <code>max</code> mode. Guaranteed saved weights represented the epoch with the highest physical boundary overlap with ground-truth data.</p>
+                    </div>
+
+                    <div class="glass-card anim-element delay-4" style="padding: 1.8rem; border-color: var(--gold);">
+                        <h3 style="color: var(--gold); font-size: 1.3rem; margin-bottom: 10px;">Overfitting Mitigation</h3>
+                        <p style="font-size: 1.1rem; line-height: 1.5;">Early Stopping deployed on <code>val_loss</code> (patience=7). The network naturally halted at <strong>Epoch 37</strong> after peaking, automatically triggering <code>restore_best_weights</code> to roll back to the Epoch 30 peak.</p>
+                    </div>
+
+                </div>
+
+                <div class="visual-placeholder anim-element delay-4" style="min-height: 100%; display: flex; flex-direction: column; justify-content: center; gap: 15px;">
+                    <img src="images/18.png" class="anim-element delay-4" style="width: 100%; max-height: 600px; object-fit: contain; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);" alt="Architecture Diagram">
+                    <span style="font-size: 0.95rem; color: var(--text-muted); font-family: 'Inter', sans-serif;">Generated via Matplotlib demonstrating stable optimization convergence</span>
+                </div>
+                
+            </div>
+        </div>
+
+        <!-- Slide 19 -->
+        <div class="slide">
+            <h2 class="anim-element delay-1" style="margin-bottom: 1rem;">Comprehensive Pixel-Wise Diagnostics</h2>
+            
+            <div class="split-layout" style="align-items: stretch; gap: 2rem;">
+                
+                <div style="display: flex; flex-direction: column; gap: 1rem;">
+                    
+                    <div class="glass-card anim-element delay-2" style="border-left: 4px solid var(--emerald); padding: 1.2rem 1.5rem;">
+                        <h3 class="accent-text" style="font-size: 1.15rem; margin-bottom: 5px;">Overcoming Class Imbalance</h3>
+                        <p style="font-size: 1rem; line-height: 1.4; margin: 0; color: var(--text-muted);">
+                            Global pixel accuracy (99.78%) is an illusion driven by massive background arrays. The pipeline relies strictly on spatial overlap metrics (IoU & Dice) to penalize false boundaries.
+                        </p>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div class="glass-card anim-element delay-3" style="padding: 1.2rem; text-align: center;">
+                            <div class="cinematic-metric" style="font-size: 2.5rem; margin-bottom: 2px;">96.95%</div>
+                            <div class="metric-caption" style="font-size: 0.75rem; color: var(--emerald);">IoU Score<br>(Jaccard Index)</div>
+                        </div>
+                        <div class="glass-card anim-element delay-4" style="padding: 1.2rem; text-align: center;">
+                            <div class="cinematic-metric" style="font-size: 2.5rem; background: linear-gradient(to bottom, #fff, var(--blue)); -webkit-background-clip: text; margin-bottom: 2px;">98.45%</div>
+                            <div class="metric-caption" style="font-size: 0.75rem; color: var(--blue);">Dice Coefficient<br>(F1 Overlap)</div>
+                        </div>
+                    </div>
+
+                    <div class="glass-card anim-element delay-4" style="padding: 1.2rem 1.5rem; border-color: rgba(255,255,255,0.1);">
+                        <h3 style="font-size: 1.15rem; margin-bottom: 8px; color: #fff;">Advanced Diagnostic Curve Assessment</h3>
+                        <ul style="font-size: 1rem; margin: 0 0 0 1.2rem; padding: 0; color: var(--text-muted); line-height: 1.4;">
+                            <li style="margin-bottom: 5px;"><strong style="color: #fff;">ROC-AUC (0.9999):</strong> Confirms near-perfect trade-off between True Positive and False Positive Rates.</li>
+                            <li><strong style="color: #fff;">PR-AUC (0.9992):</strong> Proves that when the model predicts "Canopy," it is overwhelmingly correct (Precision: 98.61%).</li>
+                        </ul>
+                    </div>
+                    
+                </div>
+                
+                <div class="visual-placeholder anim-element delay-4" style="min-height: 380px; display: flex; flex-direction: column; justify-content: center; gap: 15px;">
+                    <img src="images/19.png" class="anim-element delay-4" style="width: 100%; max-height: 600px; object-fit: contain; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);" alt="Architecture Diagram">
+                    <span style="font-size: 0.85rem; color: var(--text-muted); font-family: 'Inter', sans-serif;">Note: CM mathematically normalized row-wise</span>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Slide 20 -->
+        <div class="slide" style="text-align: center; align-items: center;">
+            <p class="metric-caption anim-element delay-1" style="color: var(--gold); margin-bottom: 1rem;">Final Stage</p>
+            <div class="section-huge anim-element delay-2" style="background: linear-gradient(135deg, var(--gold), #fef08a); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Design and Deployment of the<br>Digital Twin System</div>
+        </div>
+
+        <!-- Slide 21 -->
+        <div class="slide">
+            <h2 class="anim-element delay-1" style="margin-bottom: 1.5rem;">State Estimation via Kalman Filtering</h2>
+            <div class="split-layout" style="align-items: stretch; gap: 3rem;">
+                
+                <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                    
+                    <div class="glass-card anim-element delay-2" style="border-left: 4px solid var(--gold); padding: 1.5rem;">
+                        <h3 class="accent-text" style="font-size: 1.25rem; margin-bottom: 8px; color: var(--gold);">1. Dynamic State-Space Modeling</h3>
+                        <p style="font-size: 1.05rem; line-height: 1.4; margin: 0;">
+                            Raw U-Net pixel counts contain frame-to-frame noise. A 1D Discrete Kalman Filter was engineered to track the true biological state vector: <strong>Canopy Area</strong> (position) and <strong>Growth Velocity</strong> (rate of biomass expansion).
+                        </p>
+                    </div>
+
+                    <div class="glass-card anim-element delay-3" style="padding: 1.5rem; text-align: center; border-color: rgba(255,255,255,0.1); background: rgba(0,0,0,0.3);">
+                        <p style="font-size: 1rem; color: var(--text-muted); margin-bottom: 10px;">Predict-Update Transition Matrix</p>
+                        
+                        <!-- CSS-Rendered Matrix Formula -->
+                        <div style="display: flex; align-items: center; justify-content: center; font-family: 'Times New Roman', serif; font-size: 1.4rem; color: #fff;">
+                            <span style="margin-right: 15px;">X<sub>k</sub> = </span>
+                            <div style="display: flex; align-items: center; border-left: 2px solid #fff; border-right: 2px solid #fff; border-radius: 4px; padding: 0 5px;">
+                                <div style="display: flex; flex-direction: column; text-align: center; gap: 5px;">
+                                    <span>1.0 &nbsp;&nbsp;&nbsp; <i>dt</i></span>
+                                    <span>0.0 &nbsp;&nbsp;&nbsp; 1.0</span>
+                                </div>
+                            </div>
+                            <span style="margin-left: 10px; margin-right: 15px;">&times;</span>
+                            <div style="display: flex; align-items: center; border-left: 2px solid #fff; border-right: 2px solid #fff; border-radius: 4px; padding: 0 5px;">
+                                <div style="display: flex; flex-direction: column; text-align: center; gap: 5px;">
+                                    <span>Area<sub>k-1</sub></span>
+                                    <span>Vel<sub>k-1</sub></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="glass-card anim-element delay-4" style="padding: 1.5rem; border-color: rgba(255,255,255,0.1);">
+                        <h3 style="font-size: 1.15rem; margin-bottom: 8px; color: #fff;">2. Noise Covariance Matrix Balancing</h3>
+                        <p style="font-size: 1.05rem; line-height: 1.4; margin: 0; color: var(--text-muted);">
+                            The filter dynamically balances the Measurement Noise <strong>(R)</strong> from the U-Net sensor inaccuracies against the Process Noise <strong>(Q)</strong>, which mathematically models unpredictable natural biological accelerations.
+                        </p>
+                    </div>
+                    
+                </div>
+                
+                <div class="visual-placeholder anim-element delay-4" style="min-height: 100%; display: flex; flex-direction: column; justify-content: center; gap: 15px; border-color: rgba(245, 158, 11, 0.3);">
+                    <img src="images/21.png" class="anim-element delay-4" style="width: 100%; max-height: 600px; object-fit: contain; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);" alt="Architecture Diagram">
+                    <span style="font-size: 0.85rem; color: var(--text-muted); font-family: 'Inter', sans-serif;">Generated via Matplotlib demonstrating Stalled Growth vs Optimal Growth</span>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Slide 22 -->
+        <div class="slide">
+            <h2 class="anim-element delay-1" style="margin-bottom: 1.5rem;">Master Orchestrator & Anomaly Gating</h2>
+            <div class="split-layout" style="align-items: stretch; gap: 2rem;">
+                
+                <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                    
+                    <div class="glass-card anim-element delay-2" style="border-left: 4px solid var(--emerald); padding: 1.5rem;">
+                        <h3 class="accent-text" style="font-size: 1.25rem; margin-bottom: 8px;">The Kalman Gate (Anomaly Rejection)</h3>
+                        <p style="font-size: 1.05rem; line-height: 1.5; margin: 0; color: var(--text-muted);">
+                            Because a plant physically cannot shrink significantly overnight, the system continuously compares the U-Net's raw area against the previously smoothed area.
+                        </p>
+                        <div style="margin-top: 12px; padding: 10px; background: rgba(0,0,0,0.4); border-radius: 6px; font-family: monospace; color: #f59e0b; font-size: 0.9rem;">
+                            if raw_area < (0.70 * prev_smoothed):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;flag_sensor_anomaly()<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;raw_area = EKF.predict() # Physics
+                        </div>
+                    </div>
+
+                    <div class="glass-card anim-element delay-3" style="border-left: 4px solid var(--blue); padding: 1.5rem;">
+                        <h3 class="accent-text" style="font-size: 1.25rem; margin-bottom: 8px;">Signal Debouncing</h3>
+                        <p style="font-size: 1.05rem; line-height: 1.5; margin: 0; color: var(--text-muted);">
+                            To prevent environmental controls from overreacting to a single false-positive classification, the Orchestrator maintains a rolling memory of the last 5 frames. A disease is only recognized if it secures a strict majority vote (≥3).
+                        </p>
+                    </div>
+                </div>
+
+                <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                    <!-- CUSTOM SYSTEM ARCHITECTURE FLOWCHART -->
+                    <div class="glass-card anim-element delay-4" style="padding: 1.5rem; background: rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center; height: 100%;">
+                        <svg viewBox="0 0 300 480" xmlns="http://www.w3.org/2000/svg" style="width: 100%; max-height: 420px; font-family: 'Helvetica Neue', sans-serif;">
+                            <defs>
+                                <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#829ab1" /></marker>
+                            </defs>
+
+                            <!-- Connectors -->
+                            <line x1="150" y1="40" x2="150" y2="70" stroke="#829ab1" stroke-width="1.5" marker-end="url(#arrow)" />
+                            <line x1="150" y1="70" x2="70" y2="100" stroke="#829ab1" stroke-width="1.5" marker-end="url(#arrow)" />
+                            <line x1="150" y1="70" x2="230" y2="100" stroke="#829ab1" stroke-width="1.5" marker-end="url(#arrow)" />
+                            
+                            <line x1="70" y1="140" x2="70" y2="180" stroke="#829ab1" stroke-width="1.5" marker-end="url(#arrow)" />
+                            <line x1="230" y1="140" x2="230" y2="180" stroke="#829ab1" stroke-width="1.5" marker-end="url(#arrow)" />
+                            
+                            <line x1="70" y1="220" x2="70" y2="260" stroke="#829ab1" stroke-width="1.5" marker-end="url(#arrow)" />
+                            <line x1="230" y1="220" x2="230" y2="260" stroke="#829ab1" stroke-width="1.5" marker-end="url(#arrow)" />
+
+                            <line x1="70" y1="300" x2="150" y2="340" stroke="#829ab1" stroke-width="1.5" marker-end="url(#arrow)" />
+                            <line x1="230" y1="300" x2="150" y2="340" stroke="#829ab1" stroke-width="1.5" marker-end="url(#arrow)" />
+
+                            <line x1="150" y1="380" x2="150" y2="420" stroke="#829ab1" stroke-width="1.5" marker-end="url(#arrow)" />
+
+                            <!-- Nodes -->
+                            <!-- Inputs -->
+                            <rect x="50" y="10" width="200" height="30" fill="rgba(255,255,255,0.05)" stroke="#cbd5e1" stroke-width="1.5" rx="4" />
+                            <text x="150" y="29" fill="#cbd5e1" font-size="12" font-weight="bold" text-anchor="middle">Dual-Camera Ingestion</text>
+
+                            <!-- Neural Networks -->
+                            <rect x="10" y="100" width="120" height="40" fill="rgba(59, 130, 246, 0.1)" stroke="#3b82f6" stroke-width="1.5" rx="4" />
+                            <text x="70" y="119" fill="#f8fafc" font-size="11" font-weight="bold" text-anchor="middle">U-Net</text>
+                            <text x="70" y="133" fill="#94a3b8" font-size="10" text-anchor="middle">(Spatial Mask)</text>
+
+                            <rect x="170" y="100" width="120" height="40" fill="rgba(59, 130, 246, 0.1)" stroke="#3b82f6" stroke-width="1.5" rx="4" />
+                            <text x="230" y="119" fill="#f8fafc" font-size="11" font-weight="bold" text-anchor="middle">EfficientNetB0</text>
+                            <text x="230" y="133" fill="#94a3b8" font-size="10" text-anchor="middle">(Health Class)</text>
+
+                            <!-- Raw Data -->
+                            <rect x="25" y="180" width="90" height="40" fill="none" stroke="#64748b" stroke-dasharray="3,3" stroke-width="1" rx="4" />
+                            <text x="70" y="204" fill="#cbd5e1" font-size="11" text-anchor="middle">Raw Area</text>
+
+                            <rect x="185" y="180" width="90" height="40" fill="none" stroke="#64748b" stroke-dasharray="3,3" stroke-width="1" rx="4" />
+                            <text x="230" y="204" fill="#cbd5e1" font-size="11" text-anchor="middle">Raw Status</text>
+
+                            <!-- Filters -->
+                            <rect x="10" y="260" width="120" height="40" fill="rgba(16, 185, 129, 0.1)" stroke="#10b981" stroke-width="1.5" rx="4" />
+                            <text x="70" y="279" fill="#f8fafc" font-size="11" font-weight="bold" text-anchor="middle">Kalman Gate</text>
+                            <text x="70" y="293" fill="#94a3b8" font-size="10" text-anchor="middle">(Anomaly Filter)</text>
+
+                            <rect x="170" y="260" width="120" height="40" fill="rgba(16, 185, 129, 0.1)" stroke="#10b981" stroke-width="1.5" rx="4" />
+                            <text x="230" y="279" fill="#f8fafc" font-size="11" font-weight="bold" text-anchor="middle">Debouncer</text>
+                            <text x="230" y="293" fill="#94a3b8" font-size="10" text-anchor="middle">(Majority Vote)</text>
+
+                            <!-- Master Controller -->
+                            <rect x="50" y="340" width="200" height="40" fill="rgba(245, 158, 11, 0.1)" stroke="#f59e0b" stroke-width="1.5" rx="4" />
+                            <text x="150" y="359" fill="#f59e0b" font-size="12" font-weight="bold" text-anchor="middle">DigitalTwin Controller</text>
+                            <text x="150" y="373" fill="#fcd34d" font-size="10" text-anchor="middle">Autonomous Logic Rules</text>
+
+                            <!-- Outputs -->
+                            <rect x="50" y="420" width="200" height="30" fill="rgba(239, 68, 68, 0.1)" stroke="#ef4444" stroke-width="1.5" rx="4" />
+                            <text x="150" y="439" fill="#fca5a5" font-size="12" font-weight="bold" text-anchor="middle">Environmental Actuators (ΔT, ΔEC)</text>
+                        </svg>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Slide 23 -->
+        <div class="slide">
+            <h2 class="anim-element delay-1" style="margin-bottom: 0.5rem;">Autonomous Decision Controller</h2>
+            <p class="anim-element delay-1" style="text-align: center; font-size: 1.1rem; color: var(--text-muted); margin-bottom: 1.5rem; max-width: 800px; margin-left: auto; margin-right: auto;">
+                The <code>DigitalTwinController</code> acts as the brain of the greenhouse, applying rule-based logic to the filtered biological telemetry to autonomously modulate Temperature and Electrical Conductivity.
+            </p>
+
+            <div class="grid-2" style="gap: 1rem;">
+                
+                <div class="glass-card anim-element delay-2" style="padding: 1.2rem; border-top: 3px solid var(--text-muted);">
+                    <h3 style="color: #fff; font-size: 1.15rem; margin-bottom: 8px; display: flex; align-items: center; gap: 8px;">
+                        <span style="background: rgba(255,255,255,0.1); padding: 2px 6px; border-radius: 4px; font-size: 0.85rem;">Rule 1</span>
+                        Sensor Failure Protocol
+                    </h3>
+                    <p style="font-size: 1rem; line-height: 1.4; color: var(--text-muted); margin: 0;">
+                        If the Kalman Gate detects a massive area drop, instantly freeze all environmental changes and rely entirely on the Extended Kalman Filter's mathematical predictions until vision is restored.
+                    </p>
+                </div>
+
+                <div class="glass-card anim-element delay-2" style="padding: 1.2rem; border-top: 3px solid #ef4444;">
+                    <h3 style="color: #ef4444; font-size: 1.15rem; margin-bottom: 8px; display: flex; align-items: center; gap: 8px;">
+                        <span style="background: rgba(239, 68, 68, 0.1); padding: 2px 6px; border-radius: 4px; font-size: 0.85rem;">Rule 2</span>
+                        Disease Intervention
+                    </h3>
+                    <p style="font-size: 1rem; line-height: 1.4; color: var(--text-muted); margin: 0;">
+                        If the debounced EfficientNetB0 state flags a pathology (e.g., Late Blight), immediately drop the nutrient EC to choke fungal/bacterial spread, respecting a hard safety floor (EC = 1.0).
+                    </p>
+                </div>
+
+                <div class="glass-card anim-element delay-3" style="padding: 1.2rem; border-top: 3px solid var(--gold);">
+                    <h3 style="color: var(--gold); font-size: 1.15rem; margin-bottom: 8px; display: flex; align-items: center; gap: 8px;">
+                        <span style="background: rgba(245, 158, 11, 0.1); padding: 2px 6px; border-radius: 4px; font-size: 0.85rem;">Rule 3</span>
+                        Stall Stimulation
+                    </h3>
+                    <p style="font-size: 1rem; line-height: 1.4; color: var(--text-muted); margin: 0;">
+                        If the Kalman Filter detects a growth velocity ≤ 0 (stagnation) in an otherwise healthy plant, autonomously increase the ambient temperature by 1.0°C to jumpstart metabolic activity.
+                    </p>
+                </div>
+
+                <div class="glass-card anim-element delay-3" style="padding: 1.2rem; border-top: 3px solid var(--emerald);">
+                    <h3 style="color: var(--emerald); font-size: 1.15rem; margin-bottom: 8px; display: flex; align-items: center; gap: 8px;">
+                        <span style="background: rgba(16, 185, 129, 0.1); padding: 2px 6px; border-radius: 4px; font-size: 0.85rem;">Rule 4</span>
+                        Optimal Recovery
+                    </h3>
+                    <p style="font-size: 1rem; line-height: 1.4; color: var(--text-muted); margin: 0;">
+                        If biological velocity returns to positive (growth is expanding normally), slowly taper the environmental variables back to baseline to conserve greenhouse energy.
+                    </p>
+                </div>
+                
+            </div>
+        </div>
+
+        <!-- Slide 24 -->
+        <div class="slide">
+            <h2 class="anim-element delay-1" style="margin-bottom: 1.5rem;">Adversarial Stress Testing & Dual-Camera Simulation</h2>
+            
+            <div class="split-layout" style="align-items: stretch; gap: 2rem;">
+                
+                <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                    
+                    <div class="glass-card anim-element delay-2" style="border-left: 4px solid var(--blue); padding: 1.5rem;">
+                        <h3 style="font-size: 1.25rem; margin-bottom: 8px; color: #fff;">1. Dual-Sensor Synchronization</h3>
+                        <p style="font-size: 1.05rem; line-height: 1.4; color: var(--text-muted); margin: 0;">
+                            To simulate a live hydroponic environment, the pipeline zips two distinct datasets into a perfect 1:1 temporal sequence: <strong>Overhead Spatial Camera</strong> (Komatsuna for biomass) and a <strong>Macro Diagnostic Camera</strong> (PlantVillage for pathology).
+                        </p>
+                    </div>
+
+                    <div class="glass-card anim-element delay-3" style="border-left: 4px solid var(--emerald); padding: 1.5rem;">
+                        <h3 style="font-size: 1.25rem; margin-bottom: 8px; color: #fff;">2. Ground Truth Disease Cycling</h3>
+                        <p style="font-size: 1.05rem; line-height: 1.4; color: var(--text-muted); margin: 0;">
+                            To validate the DigitalTwinController's logic, the plant must experience biological distress. The pipeline autonomously cycles through all 9 disease classes (Frames 15-59) to prove the controller accurately drops EC to suppress fungal spread, before entering a final healthy recovery phase.
+                        </p>
+                    </div>
+
+                    <div class="glass-card anim-element delay-4" style="border-left: 4px solid #ef4444; padding: 1.5rem; background: rgba(239, 68, 68, 0.05);">
+                        <h3 style="color: #ef4444; font-size: 1.25rem; margin-bottom: 8px;">3. Hardware Anomaly (The Sensor Blackout)</h3>
+                        <p style="font-size: 1.05rem; line-height: 1.4; color: var(--text-muted); margin: 0;">
+                            At Frame 65, the script explicitly injects a corrupted, pitch-black image—simulating a camera signal loss. This stress-tests the Kalman Gate, proving it instantly rejects the mathematically impossible data and perfectly stabilizes the control loop using purely predicted physics.
+                        </p>
+                    </div>
+                    
+                </div>
+                
+                <div class="glass-card anim-element delay-4" style="padding: 1.5rem; background: rgba(0,0,0,0.6); display: flex; flex-direction: column; border-color: rgba(255,255,255,0.1);">
+                    <h3 style="color: #fff; font-size: 1.1rem; margin-bottom: 12px; font-family: monospace; letter-spacing: 1px;">TERMINAL OUTPUT: GROUND TRUTH INJECTION SCHEDULE</h3>
+                    <div style="font-family: monospace; color: #10b981; font-size: 0.95rem; line-height: 1.6; background: rgba(0,0,0,0.8); padding: 15px; border-radius: 6px; overflow-x: hidden;">
+                        <span style="color: #94a3b8;">Frames 0 to 14  :</span> Tomato___healthy (Initial Growth/Stalled)<br>
+                        <span style="color: #94a3b8;">Frames 15 to 19 :</span> Tomato_Bacterial_spot<br>
+                        <span style="color: #94a3b8;">Frames 20 to 24 :</span> Tomato_Early_blight<br>
+                        <span style="color: #94a3b8;">Frames 25 to 29 :</span> Tomato_Late_blight<br>
+                        <span style="color: #94a3b8;">Frames 30 to 34 :</span> Tomato_Leaf_Mold<br>
+                        <span style="color: #94a3b8;">Frames 35 to 39 :</span> Tomato_Septoria_leaf_spot<br>
+                        <span style="color: #94a3b8;">Frames 40 to 44 :</span> Tomato_Spider_mites<br>
+                        <span style="color: #94a3b8;">Frames 45 to 49 :</span> Tomato_Target_Spot<br>
+                        <span style="color: #94a3b8;">Frames 50 to 54 :</span> Tomato_YellowLeaf_Curl_Virus<br>
+                        <span style="color: #94a3b8;">Frames 55 to 59 :</span> Tomato_mosaic_virus<br>
+                        <span style="color: #94a3b8;">Frames 60 to 74 :</span> Tomato___healthy (Recovery Phase)<br><br>
+                        <span style="color: #ef4444; font-weight: bold;">[!] FATAL SENSOR ERROR INJECTED AT FRAME 65.</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Slide 25 -->
+        <div class="slide">
+            <h2 class="anim-element delay-1" style="margin-bottom: 1.5rem;">Telemetry Analysis & Stress Testing</h2>
+            
+            <div class="split-layout" style="align-items: stretch; gap: 2rem;">
+                <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                    
+                    <div class="glass-card anim-element delay-2" style="border-left: 4px solid var(--gold); padding: 1.5rem;">
+                        <h3 style="font-size: 1.25rem; margin-bottom: 8px; color: var(--gold);">Closed-Loop Actuation Tracking</h3>
+                        <p style="font-size: 1.05rem; line-height: 1.5; color: var(--text-muted); margin: 0;">
+                            The true test of a Digital Twin is its ability to translate biological telemetry into physical intervention. The dashboard maps the Environmental Controller's output—specifically the <strong>Electrical Conductivity (EC)</strong>—along a synchronized chronological X-axis.
+                        </p>
+                    </div>
+
+                    <div class="glass-card anim-element delay-3" style="border-left: 4px solid #ef4444; padding: 1.5rem;">
+                        <h3 style="font-size: 1.25rem; margin-bottom: 8px; color: #ef4444;">Pathogen Starvation Protocol</h3>
+                        <p style="font-size: 1.05rem; line-height: 1.5; color: var(--text-muted); margin: 0;">
+                            The telemetry definitively proves that the instant the AI detects a biological threat via the macro camera, the orchestrator autonomously drops the EC to 1.0 to starve the pathogen, restoring it only when the recovery phase is secured.
+                        </p>
+                    </div>
+
+                </div>
+                
+                <!-- Plot 1: Environmental Control (EC) Plot -->
+                <div class="visual-placeholder anim-element delay-4" style="min-height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 15px;">
+                    <img src="images/25.png" class="anim-element delay-4" style="width: 100%; max-height: 600px; object-fit: contain; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);" alt="Architecture Diagram">
+                    <span style="font-size: 0.9rem; color: var(--text-muted); font-family: 'Inter', sans-serif;">Matplotlib: Time Step vs EC (mS/cm)</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 26 -->
+        <div class="slide">
+            <h2 class="anim-element delay-1" style="margin-bottom: 1.5rem;">Multi-Disease Cycle Analysis</h2>
+            
+            <div class="split-layout" style="align-items: stretch; gap: 2rem;">
+                <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                    
+                    <div class="glass-card anim-element delay-2" style="border-left: 4px solid var(--blue); padding: 1.5rem;">
+                        <h3 style="font-size: 1.25rem; margin-bottom: 8px; color: #fff;">Dynamic State-Transition Extraction</h3>
+                        <p style="font-size: 1.05rem; line-height: 1.5; color: var(--text-muted); margin: 0;">
+                            Rather than randomly sampling frames, the system actively parses the telemetry array to pinpoint exact "State Transitions"—the precise time steps where the EfficientNetB0 model changed its diagnostic prediction (indicated by dashed red transition lines).
+                        </p>
+                    </div>
+
+                    <div class="glass-card anim-element delay-3" style="border-left: 4px solid var(--emerald); padding: 1.5rem;">
+                        <h3 style="font-size: 1.25rem; margin-bottom: 8px; color: #fff;">Categorical Timeline Mapping</h3>
+                        <p style="font-size: 1.05rem; line-height: 1.5; color: var(--text-muted); margin: 0;">
+                            String-based disease labels were mapped to discrete Y-axis coordinates and plotted chronologically. This visualizes the system systematically navigating through all 9 injected pathology classes before cleanly returning to the healthy baseline.
+                        </p>
+                    </div>
+
+                </div>
+                
+                <!-- Plot 2: Disease Classifier Timeline Plot -->
+                <div class="visual-placeholder anim-element delay-4" style="min-height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 15px;">
+                    <img src="images/26.png" class="anim-element delay-4" style="width: 100%; max-height: 600px; object-fit: contain; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);" alt="Architecture Diagram">
+                    <span style="font-size: 0.9rem; color: var(--text-muted); font-family: 'Inter', sans-serif;">Matplotlib: Disease Class vs Time Step</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 27 -->
+        <div class="slide">
+            <h2 class="anim-element delay-1" style="margin-bottom: 0.5rem;">State Machine & Vision Debugging</h2>
+            
+            <!-- Vertically stacked flex container constrained to screen height -->
+            <div style="display: flex; flex-direction: column; gap: 1rem; height: 75vh;">
+                
+                <!-- Top Chart: State Machine Logic -->
+                <div class="glass-card anim-element delay-2" style="padding: 1rem; display: flex; flex-direction: column; height: 48%;">
+                    <!-- Title & Text on one line to save vertical space -->
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                        <h3 class="accent-text" style="font-size: 1.1rem; margin: 0;">AI Logic State Mapping</h3>
+                        <p style="font-size: 0.95rem; color: var(--text-muted); margin: 0;">Actions mapped to integers (0=Optimal, 1=Stall, 2=Disease, 3=Anomaly)</p>
+                    </div>
+                    <!-- Image Wrapper -->
+                    <div style="flex: 1; width: 100%; display: flex; justify-content: center; align-items: center; overflow: hidden; border-radius: 8px;">
+                        <img src="images/27.png" style="width: 100%; height: 100%; object-fit: contain;" alt="AI Logic Timeline">
+                    </div>
+                </div>
+
+                <!-- Bottom Chart: Computer Vision Audit -->
+                <div class="glass-card anim-element delay-3" style="padding: 1rem; border-color: rgba(255,255,255,0.1); display: flex; flex-direction: column; height: 48%;">
+                    <!-- Title & Text on one line to save vertical space -->
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                        <h3 class="accent-text" style="font-size: 1.1rem; margin: 0;">Worst-Case Vision Audit</h3>
+                        <p style="font-size: 0.95rem; color: var(--text-muted); margin: 0;">Isolates the max EKF residual error to verify confused frames</p>
+                    </div>
+                    <!-- Image Wrapper -->
+                    <div style="flex: 1; width: 100%; display: flex; justify-content: center; align-items: center; overflow: hidden; border-radius: 8px;">
+                        <img src="images/277.png" style="width: 100%; height: 100%; object-fit: contain;" alt="Vision Audit Frame">
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Slide 28 -->
+        <div class="slide">
+            <h2 class="anim-element delay-1" style="margin-bottom: 1.5rem;">eXplainable AI (XAI) & Visual Interpretability</h2>
+            
+            <div class="split-layout" style="align-items: stretch; gap: 2rem;">
+                
+                <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                    
+                    <div class="glass-card anim-element delay-2" style="border-left: 4px solid var(--gold); padding: 1.5rem;">
+                        <h3 class="accent-text" style="font-size: 1.25rem; margin-bottom: 8px; color: var(--gold);">U-Net Spatial Uncertainty Mapping</h3>
+                        <p style="font-size: 1.05rem; line-height: 1.4; color: var(--text-muted); margin: 0 0 10px 0;">
+                            To visualize exactly where the model is "confused," an uncertainty mapping algorithm extracts the continuous probability tensor (P) and calculates the absolute divergence from a 0.5 guess:
+                        </p>
+                        <!-- CSS-Rendered Math Formula -->
+                        <div style="display: flex; align-items: center; justify-content: center; font-family: 'Times New Roman', serif; font-size: 1.5rem; color: #fff; background: rgba(0,0,0,0.3); padding: 10px; border-radius: 6px;">
+                            Uncertainty = 1.0 &minus; |2 &times; (P &minus; 0.5)|
+                        </div>
+                        <p style="font-size: 0.95rem; line-height: 1.4; color: var(--text-muted); margin: 10px 0 0 0;">
+                            This topological map proves confidence is absolute across the bulk canopy, wavering only at sub-pixel overlapping leaf boundaries.
+                        </p>
+                    </div>
+
+                    <div class="glass-card anim-element delay-3" style="border-left: 4px solid var(--blue); padding: 1.5rem;">
+                        <h3 class="accent-text" style="font-size: 1.25rem; margin-bottom: 8px; color: var(--blue);">EfficientNet Grad-CAM</h3>
+                        <p style="font-size: 1.05rem; line-height: 1.4; color: var(--text-muted); margin: 0;">
+                            To interpret the diagnostic branch, <strong>Gradient-weighted Class Activation Mapping (Grad-CAM)</strong> was implemented using <code>tf.GradientTape</code>. By pooling the mathematical derivatives flowing backward from the final prediction to the last spatial convolution, the script visually isolates the physical leaf regions (e.g., fungal spots) that triggered the classification.
+                        </p>
+                    </div>
+
+                </div>
+                
+                <!-- Plot: The 2x3 XAI Masterpiece -->
+                <div class="visual-placeholder anim-element delay-4" style="min-height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 15px; border-color: rgba(255,255,255,0.1);">
+                    <img src="images/28.png" class="anim-element delay-4" style="width: 100%; max-height: 600px; object-fit: contain; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);" alt="Architecture Diagram">
+                    <span style="font-size: 0.85rem; color: var(--text-muted); font-family: 'Inter', sans-serif;">Top: U-Net Probability/Uncertainty | Bottom: Grad-CAM Superimposed Clinical Isolation</span>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Slide 29 -->
+        <div class="slide">
+            <h2 class="anim-element delay-1" style="margin-bottom: 1.5rem;">Conclusion & Future Research Horizons</h2>
+            
+            <div class="grid-2" style="gap: 2rem; align-items: stretch;">
+                
+                <!-- Left Column: Core Contributions -->
+                <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                    <div class="glass-card anim-element delay-2" style="padding: 1.5rem; border-color: rgba(16, 185, 129, 0.3); background: rgba(16, 185, 129, 0.05);">
+                        <h3 style="color: var(--emerald); font-size: 1.3rem; margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
+                            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            Core Contributions
+                        </h3>
+                        
+                        <div style="margin-bottom: 15px;">
+                            <h4 style="color: #fff; font-size: 1.1rem; margin-bottom: 5px;">Cyber-Physical Integration</h4>
+                            <p style="font-size: 1rem; line-height: 1.4; color: var(--text-muted); margin: 0;">Successfully transitioned from isolated, passive computer vision to an active, autonomous closed-loop Digital Twin.</p>
+                        </div>
+
+                        <div style="margin-bottom: 15px;">
+                            <h4 style="color: #fff; font-size: 1.1rem; margin-bottom: 5px;">Kinematic Sensor Fault-Tolerance</h4>
+                            <p style="font-size: 1rem; line-height: 1.4; color: var(--text-muted); margin: 0;">Fused deep neural networks with Extended Kalman Filtering to mathematically stabilize noise and autonomously reject catastrophic hardware failures.</p>
+                        </div>
+
+                        <div>
+                            <h4 style="color: #fff; font-size: 1.1rem; margin-bottom: 5px;">Algorithmic Transparency (XAI)</h4>
+                            <p style="font-size: 1rem; line-height: 1.4; color: var(--text-muted); margin: 0;">Secured system trust by deploying Grad-CAM and Spatial Uncertainty maps to visually audit the neural networks' internal logic.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column: Future Horizons -->
+                <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                    <div class="glass-card anim-element delay-3" style="padding: 1.5rem; border-color: rgba(59, 130, 246, 0.3); background: rgba(59, 130, 246, 0.05);">
+                        <h3 style="color: var(--blue); font-size: 1.3rem; margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
+                            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                            Future Horizons
+                        </h3>
+                        
+                        <div style="margin-bottom: 15px;">
+                            <h4 style="color: #fff; font-size: 1.1rem; margin-bottom: 5px;">Volumetric 3D Biomass Estimation</h4>
+                            <p style="font-size: 1rem; line-height: 1.4; color: var(--text-muted); margin: 0;">Evolving beyond 2D U-Net segmentation by integrating RGB-D sensors (e.g., Intel RealSense) and Point Cloud generation to resolve biological leaf-overlap limitations.</p>
+                        </div>
+
+                        <div style="margin-bottom: 15px;">
+                            <h4 style="color: #fff; font-size: 1.1rem; margin-bottom: 5px;">Deep Reinforcement Learning (DRL)</h4>
+                            <p style="font-size: 1rem; line-height: 1.4; color: var(--text-muted); margin: 0;">Replacing the deterministic rule-based controller with Model Predictive Control (MPC) and DRL to autonomously optimize the thermodynamic energy-to-growth ratio.</p>
+                        </div>
+
+                        <div>
+                            <h4 style="color: #fff; font-size: 1.1rem; margin-bottom: 5px;">Edge AI Network Quantization</h4>
+                            <p style="font-size: 1rem; line-height: 1.4; color: var(--text-muted); margin: 0;">Applying network pruning and TensorRT quantization to deploy the pipeline natively on low-power industrial Edge hardware (NVIDIA Jetson / Google Coral TPU).</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Slide 30 -->
+        <div class="slide" style="text-align: center; align-items: center;">
+            <div class="glass-card anim-element delay-1" style="padding: 5rem; max-width: 900px; width: 100%; text-align: center; background: transparent; border: none;">
+                <h1 style="font-size: 4rem; margin-bottom: 2rem;">Thank You.</h1>
+                <p class="metric-caption anim-element delay-2" style="font-size: 1.5rem; color: var(--emerald); margin-bottom: 4rem;">Questions & Discussion</p>
+                <div class="anim-element delay-3">
+                    <p style="font-size: 1.6rem; font-weight: 700; color: #fff;">Amirali Rouhi</p>
+                    <p style="color: var(--text-muted); margin-top: 10px; font-size: 1.1rem;">K. N. Toosi University of Technology</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Navigation / Bottom HUD -->
+    <div id="nav-bar">
+        <div style="font-size: 0.9rem; font-weight: 600; letter-spacing: 1px; color: var(--text-muted); text-transform: uppercase;">
+            B.Sc. Thesis Defense
+        </div>
+        
+        <div class="progress-track" id="dot-track">
+            <!-- JS will populate dots here based on totalSlides -->
+        </div>
+        
+        <div style="display: flex; gap: 15px; align-items: center;">
+            <button id="prevBtn" class="btn" onclick="prevSlide()" disabled>
+                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"></path></svg>
+            </button>
+            <div style="font-family: monospace; font-size: 1.1rem; color: #fff; width: 60px; text-align: center;" id="counter">01/30</div>
+            <button id="nextBtn" class="btn" onclick="nextSlide()">
+                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path></svg>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+        const counter = document.getElementById('counter');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const dotTrack = document.getElementById('dot-track');
+
+        // Create tracking dots
+        for(let i=0; i<totalSlides; i++) {
+            const dot = document.createElement('div');
+            dot.className = 'dot';
+            dotTrack.appendChild(dot);
+        }
+        const dots = document.querySelectorAll('.dot');
+
+        function updatePresentation() {
+            // Remove active classes
+            slides.forEach(slide => slide.classList.remove('active'));
+            dots.forEach(dot => dot.classList.remove('active'));
+            
+            // Add active class to current slide and trigger layout reflow for animation
+            const activeSlide = slides[currentSlide];
+            activeSlide.classList.add('active');
+            dots[currentSlide].classList.add('active');
+            
+            // Format counter
+            counter.innerText = `${(currentSlide + 1).toString().padStart(2, '0')}/${totalSlides}`;
+            
+            // Button states
+            prevBtn.disabled = currentSlide === 0;
+            nextBtn.disabled = currentSlide === totalSlides - 1;
+        }
+
+        function nextSlide() { if (currentSlide < totalSlides - 1) { currentSlide++; updatePresentation(); } }
+        function prevSlide() { if (currentSlide > 0) { currentSlide--; updatePresentation(); } }
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'ArrowRight' || event.key === ' ') { nextSlide(); }
+            else if (event.key === 'ArrowLeft') { prevSlide(); }
+        });
+
+        // Initialize
+        updatePresentation();
+    </script>
+</body>
+</html>
